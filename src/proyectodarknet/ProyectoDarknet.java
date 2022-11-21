@@ -22,6 +22,8 @@ public class ProyectoDarknet {
         
         Leer read = new Leer(ruta);
         
+        read.Partir();
+        
     }
     
 }
