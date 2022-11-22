@@ -20,9 +20,8 @@ public class ProyectoDarknet {
         Scanner teclado = new Scanner(System.in);
         String ruta = teclado.nextLine();
         
-        Leer read = new Leer(ruta);
-        
-        read.Partir();
+        Archivo read = new Archivo(ruta);
+       
         
     }
     
