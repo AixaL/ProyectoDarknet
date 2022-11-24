@@ -44,27 +44,39 @@ public class Archivo {
     }
     
     public void Separar(String ruta){
-       try{
+       try{   
+            FileReader fileReader = new FileReader(ruta);  
+            BufferedReader reader = new BufferedReader(fileReader);
+            int numLineas = 0;
+            while ((line = reader.readLine()) != null)   //loops through every line until null found
+            {
+                numLineas++;
+            }
+            
+            int CPUs = Runtime.getRuntime().availableProcessors();
+            int dividir = numLineas / (CPUs * 4);
+            System.out.println(numLineas);
+            System.out.println(dividir);
+            
             BufferedReader br = new BufferedReader(new FileReader(ruta)); 
             //create thje first file which will have 1000 lines
             File file = new File(rutaDir + File.separator + "FileNumber_"+1+".csv");
             FileWriter fstream1 = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(fstream1);  
-            String line="";
-            //count the number of line
+            BufferedWriter out = new BufferedWriter(fstream1);
+            
+            String line = "";
             int count=1;
             int file_Number=2;
             while ((line = br.readLine()) != null) 
             {
                 //if the line is divided by 1000 then create a new file with file count
-                if(count % 1000 == 0)
+                if(count % (dividir + 1) == 0)
                 {
                     File newFile = new File(rutaDir + File.separator +"FileNumber_"+file_Number+".csv");
                     fstream1 = new FileWriter(newFile);
                     file_Number++;
                     out = new BufferedWriter(fstream1); 
                 }
-                 if(line.indexOf(",")!=-1)
                  //line=line.substring(2, line.indexOf(","));
                  out.write(line);
                  out.newLine();
