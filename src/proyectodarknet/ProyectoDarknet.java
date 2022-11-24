@@ -21,6 +21,8 @@ public class ProyectoDarknet {
         String ruta = teclado.nextLine();
         
         Archivo read = new Archivo(ruta);
+        
+        
        
         
     }
