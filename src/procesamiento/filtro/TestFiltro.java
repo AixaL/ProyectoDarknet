@@ -1,9 +1,9 @@
 package procesamiento.filtro;
 
-import procesamiento.Operador;
-import procesamiento.Tipo;
+import procesamiento.enumeradores.Operador;
+import procesamiento.enumeradores.Tipo;
 
-import static procesamiento.Columnas.*;
+import static procesamiento.enumeradores.Columna.*;
 
 public class TestFiltro {
     public static void main(String[] args) {

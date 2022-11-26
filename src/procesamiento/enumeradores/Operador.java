@@ -1,4 +1,4 @@
-package procesamiento;
+package procesamiento.enumeradores;
 
 public enum Operador {
     EQUALS,

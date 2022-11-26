@@ -1,6 +1,6 @@
 package procesamiento.filtro;
 
-import static procesamiento.Operador.EQUALS;
+import static procesamiento.enumeradores.Operador.EQUALS;
 
 public class Filtrado {
     public static boolean esAceptadaLinea(String[] linea, Filtro[] filtros) throws Exception {

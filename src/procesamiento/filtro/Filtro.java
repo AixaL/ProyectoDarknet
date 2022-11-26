@@ -1,7 +1,7 @@
 package procesamiento.filtro;
 
-import procesamiento.Operador;
-import procesamiento.Tipo;
+import procesamiento.enumeradores.Operador;
+import procesamiento.enumeradores.Tipo;
 
 public class Filtro {
     private final int       posicion;

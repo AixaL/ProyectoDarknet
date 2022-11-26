@@ -1,9 +1,9 @@
-package procesamiento;
+package procesamiento.enumeradores;
 
-import static procesamiento.Tipo.DOUBLE;
-import static procesamiento.Tipo.STRING;
+import static procesamiento.enumeradores.Tipo.DOUBLE;
+import static procesamiento.enumeradores.Tipo.STRING;
 
-public enum Columnas {
+public enum Columna {
     C00 ( 0, "flow_id",                     STRING ),
     C01 ( 1, "src_ip",                      STRING ),
     C02 ( 2, "src_port",                    DOUBLE ),
@@ -94,7 +94,7 @@ public enum Columnas {
     private String  nombre;
     private Tipo    tipo;
 
-    Columnas(int posicion, String nombre, Tipo tipo) {
+    Columna(int posicion, String nombre, Tipo tipo) {
         this.setPosicion(posicion);
         this.setNombre(nombre);
         this.setTipo(tipo);

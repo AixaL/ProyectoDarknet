@@ -1,26 +1,25 @@
 package procesamiento.extractor;
 
-import procesamiento.Columnas;
-import procesamiento.ColumnasLinea;
+import procesamiento.enumeradores.Columna;
 import procesamiento.filtro.Filtrado;
 import procesamiento.filtro.Filtro;
 
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Extractor extends ColumnasLinea {
+public class Extractor extends Linea {
     public Extractor(String[] linea) {
         setLinea(linea);
     }
 
-    public String[] getValores(Set<Columnas> columnasRequeridas, Filtro[] filtros) throws Exception {
+    public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) throws Exception {
 
         String[] linea = getLinea();
 
         ArrayList<String> bufferColumnas = new ArrayList<>();
 
         if (Filtrado.esAceptadaLinea(linea, filtros)) {
-            for (Columnas columna: Columnas.values()) {
+            for (Columna columna: Columna.values()) {
                 if (columnasRequeridas.contains(columna)) {
                     bufferColumnas.add(linea[columna.getPosicion()]);
                 }

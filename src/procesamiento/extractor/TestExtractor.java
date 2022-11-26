@@ -1,13 +1,13 @@
 package procesamiento.extractor;
 
-import procesamiento.Columnas;
-import procesamiento.Operador;
-import procesamiento.Tipo;
+import procesamiento.enumeradores.Columna;
+import procesamiento.enumeradores.Operador;
+import procesamiento.enumeradores.Tipo;
 import procesamiento.filtro.Filtro;
 
 import java.util.Set;
 
-import static procesamiento.Columnas.*;
+import static procesamiento.enumeradores.Columna.*;
 
 public class TestExtractor {
     public static void main(String[] args) throws Exception {
@@ -23,7 +23,7 @@ public class TestExtractor {
 
         Extractor extractorEjemplo = new Extractor(separacionEjemplo);
 
-        Set<Columnas> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00); // No importa el orden
+        Set<Columna> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00); // No importa el orden
 
         int         posicion1   = C06.getPosicion();
         Operador    operador1   = Operador.EQUALS;
