@@ -1,10 +1,13 @@
-package procesamiento;
+package procesamiento.filtro;
+
+import procesamiento.Operador;
+import procesamiento.Tipo;
 
 public class Filtro {
-    private int         posicion;
-    private Operador    operador;
-    private String      valor;
-    private Tipo        tipo;
+    private final int       posicion;
+    private final Operador operador;
+    private final String    valor;
+    private final Tipo tipo;
 
     public Filtro(int posicion, Operador operador, String valor, Tipo tipo) {
         this.posicion   = posicion;
@@ -28,4 +31,6 @@ public class Filtro {
     public Tipo getTipo() {
         return tipo;
     }
+
+
 }
