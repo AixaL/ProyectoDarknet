@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Extractor extends Linea {
+
     public Extractor(String[] linea) {
         setLinea(linea);
     }

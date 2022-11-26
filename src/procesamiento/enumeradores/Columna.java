@@ -123,4 +123,5 @@ public enum Columna {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
+
 }

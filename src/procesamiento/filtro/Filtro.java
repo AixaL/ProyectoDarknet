@@ -4,10 +4,11 @@ import procesamiento.enumeradores.Operador;
 import procesamiento.enumeradores.Tipo;
 
 public class Filtro {
+
     private final int       posicion;
-    private final Operador operador;
+    private final Operador  operador;
     private final String    valor;
-    private final Tipo tipo;
+    private final Tipo      tipo;
 
     public Filtro(int posicion, Operador operador, String valor, Tipo tipo) {
         this.posicion   = posicion;
@@ -31,6 +32,5 @@ public class Filtro {
     public Tipo getTipo() {
         return tipo;
     }
-
 
 }

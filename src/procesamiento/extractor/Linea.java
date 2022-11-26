@@ -1,6 +1,7 @@
 package procesamiento.extractor;
 
 public abstract class Linea {
+
     private String[] linea;
 
     public String[] getLinea() {
@@ -10,4 +11,5 @@ public abstract class Linea {
     public void setLinea(String[] linea) {
         this.linea = linea;
     }
+
 }

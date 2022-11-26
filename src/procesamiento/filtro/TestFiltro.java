@@ -7,6 +7,7 @@ import static procesamiento.enumeradores.Columna.*;
 
 public class TestFiltro {
     public static void main(String[] args) {
+
         String lineaEjemplo =
                 "10.152.152.11-52.71.139.178-40621-80-6,10.152.152.11,40621,52.71.139.178,80,6,24/02/2016 11:59:04 AM," +
                         "62340425,12,12,2193,1122,1136,0,182.75,427.1442433,559,0,93.5,204.45115,53.17576837,0.384982938," +
@@ -131,5 +132,6 @@ public class TestFiltro {
         } catch (Exception e) {
             throw new RuntimeException("Error en filtrado");
         }
+
     }
 }
