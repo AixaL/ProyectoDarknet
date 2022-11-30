@@ -17,32 +17,66 @@ public class TestFiltro {
                         "3.10491E+14,1.45633E+15,9562467,Non-Tor,Browsing\n";
 
         String[] separacionEjemplo = lineaEjemplo.trim().split(",");
+        
+        
 
         int         posicion1   = C06.getPosicion();
         Operador    operador1   = Operador.EQUALS;
         String      valor1      = "24/02/2016 11:59:04 AM"; // Fecha igual
         Tipo        tipo1       = C06.getTipo();
-
+        
+        System.out.println(posicion1);
+        System.out.println(operador1);
+        System.out.println(valor1);
+        System.out.println(tipo1);
+         System.out.println("----------------");
+        
         int         posicion2   = C06.getPosicion();
         Operador    operador2   = Operador.EQUALS;
         String      valor2      = "24/02/2016 12:00:00 AM"; // Fecha no igual
         Tipo        tipo2       = C06.getTipo();
+        
+        System.out.println(posicion2);
+        System.out.println(operador2);
+        System.out.println(valor2);
+        System.out.println(tipo2);
+        System.out.println("----------------");
 
         int         posicion3   = C02.getPosicion();
         Operador    operador3   = Operador.MORETHAN;
         String      valor3      = "40000"; // Valor aceptado
         Tipo        tipo3       = C02.getTipo();
+        
+        System.out.println(posicion3);
+        System.out.println(operador3);
+        System.out.println(valor3);
+        System.out.println(tipo3);
+        System.out.println("----------------");
 
         int         posicion4   = C04.getPosicion();
         Operador    operador4   = Operador.LESSTHAN;
         String      valor4      = "81"; // Valor aceptado
         Tipo        tipo4       = C04.getTipo();
+        
+        System.out.println(posicion4);
+        System.out.println(operador4);
+        System.out.println(valor4);
+        System.out.println(tipo4);
+        System.out.println("----------------");
 
         int         posicion5   = C04.getPosicion();
         Operador    operador5   = Operador.LESSTHAN;
         String      valor5      = "79"; // Valor no aceptado
         Tipo        tipo5       = C04.getTipo();
+        
+        System.out.println(posicion5);
+        System.out.println(operador5);
+        System.out.println(valor5);
+        System.out.println(tipo5);
+        System.out.println("----------------");
 
+        
+        
         Filtro[] filtros1 = {
             new Filtro(
                 posicion1,
@@ -92,6 +126,7 @@ public class TestFiltro {
         };
 
         try {
+            
             System.out.println(
                     "Respuesta de filtrado positiva: " +
                             separacionEjemplo[posicion1]    + " " +

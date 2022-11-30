@@ -10,8 +10,8 @@ import java.nio.file.FileSystems;
  * @author 93004
  */
 public class Archivo {
-    String line = "";
-    static String rutaDir = "";
+    static String line = "";
+    public static String rutaDir = "";
     //final String delimiter = ",";
     static String CSVFile = "C:\\Users\\93004\\Documents\\NetBeansProjects\\ProyectoDarknet\\Files\\Darknet.csv";
     
@@ -43,7 +43,7 @@ public class Archivo {
        
     }
     
-    public void Separar(String ruta){
+    public static void Separar(String ruta){
        try{   
             FileReader fileReader = new FileReader(ruta);  
             BufferedReader reader = new BufferedReader(fileReader);
@@ -66,22 +66,30 @@ public class Archivo {
             
             String line = "";
             int count=1;
-            int file_Number=2;
+            int file_Number=1;
             while ((line = br.readLine()) != null) 
             {
+                //System.out.println(count % (dividir + 1));
                 //if the line is divided by 1000 then create a new file with file count
                 if(count % (dividir + 1) == 0)
                 {
+                    out.close();
                     File newFile = new File(rutaDir + File.separator +"FileNumber_"+file_Number+".csv");
                     fstream1 = new FileWriter(newFile);
                     file_Number++;
                     out = new BufferedWriter(fstream1); 
+                }else{
+                    //System.out.println(count % (dividir + 1));
+                    //System.out.println(line);
                 }
                  //line=line.substring(2, line.indexOf(","));
                  out.write(line);
                  out.newLine();
-                count++;
+                 line = "";
+                 count++;
             }
+            out.close();
+
        }catch(IOException e){
            System.out.println(e);
        }
@@ -99,7 +107,14 @@ public class Archivo {
         
         File X = new File(rutaDir);
         if(X.exists()){
-            System.out.println("existe");
+            if (X.isDirectory()) {
+                File[] entries = X.listFiles();
+                if (entries != null) {
+                  for (File entry : entries) {
+                    entry.delete();
+                  }
+                }
+              }
             if (X.delete()){
                 System.out.println("El directorio " + X + " ha sido borrado correctamente");
                 if (X.mkdirs()) {

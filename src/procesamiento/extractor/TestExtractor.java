@@ -1,11 +1,12 @@
 package procesamiento.extractor;
-
 import procesamiento.enumeradores.Columna;
 import procesamiento.enumeradores.Operador;
 import procesamiento.enumeradores.Tipo;
 import procesamiento.filtro.Filtro;
-
 import java.util.Set;
+import java.util.HashSet;
+
+
 
 import static procesamiento.enumeradores.Columna.*;
 
