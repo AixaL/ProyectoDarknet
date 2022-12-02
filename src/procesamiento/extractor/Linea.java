@@ -1,7 +1,6 @@
 package procesamiento.extractor;
 
 public abstract class Linea {
-
     private String[] linea;
 
     public String[] getLinea() {

@@ -1,6 +1,7 @@
 
 package procesamiento.worker;
 
+import Errores.ErrorFiltro;
 import procesamiento.enumeradores.Columna;
 import procesamiento.enumeradores.Operador;
 import procesamiento.enumeradores.Tipo;
@@ -20,29 +21,15 @@ import static procesamiento.manager.Manager.getBufferedWriter;
  *
  * @author 93004
  */
-public class Worker implements Runnable{
-    
-    //private String nombreA;
-    //private File file;
-   // private File fileResultado;
+public class Worker implements Runnable {
     private final File[] paqueteArchivos;
     
     public Worker(File[] paqueteArchivos){
-        
-        //System.out.println(f.getAbsolutePath());
-        //System.out.println(fr.getAbsolutePath());
-        
-        //nombreA = nombreArchivo;
-        //file = f;
-        //fileResultado = fr;
-
         this.paqueteArchivos = paqueteArchivos;
-        
     }
     
     @Override
     public void run() {
-        
         Set<Columna> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00);
         
         int         posicion1   = C02.getPosicion();
@@ -60,16 +47,11 @@ public class Worker implements Runnable{
         };
 
         for (File archivo : paqueteArchivos) {
-
             BufferedReader bufferedReader;
-            //BufferedWriter bufferedWriter = null;
 
             try {
                 FileReader fileReader = new FileReader(archivo);
-                //FileWriter fileWriter = new FileWriter(getRutaArchivoSalida());
-
                 bufferedReader = new BufferedReader(fileReader);
-                //bufferedWriter = new BufferedWriter(fileWriter);
 
                 String lineaEntrada;
 
@@ -97,52 +79,12 @@ public class Worker implements Runnable{
                 }
             } catch (IOException e) {
                 System.out.println("Error en la lectura/escritura de archivos" + e);
-            } catch (Exception e) {
+            } catch (ErrorFiltro e) {
                 System.out.println("Valor nulo. Final del archivo encontrado.");
             }
 
         }
-
-        /*
-        try{
-            //System.out.println(fileResultado.getAbsoluteFile());
-            FileWriter fstream1 = new FileWriter(fileResultado);
-            BufferedWriter out = new BufferedWriter(fstream1);
-            
-            BufferedReader br = new BufferedReader(new FileReader(nombreA)); 
-            String line = "";
-            String linea = "";
-            while ((line = br.readLine()) != null) 
-            {
-                String[] separacionEjemplo = line.trim().split(",");
-                
-                Extractor extractorEjemplo = new Extractor(separacionEjemplo);
-                try{
-                    
-                    for (String element: extractorEjemplo.getValores(columnasRequeridas1, filtros1)) {
-                        System.out.println(element);
-                        linea = linea + element + ", " ;
-                    }
-                    if(linea!=""){
-                        out.write(linea);
-                        out.newLine();
-                    }
-                   
-                    line = "";
-                    System.out.println(linea);
-                    linea = "";
-                    
-                }catch(Exception e){
-                    System.out.println(e);
-                 }
-            }
-        }catch(IOException e){
-           System.out.println(e);
-        }
-
-         */
     }
-        
 }
 
                 

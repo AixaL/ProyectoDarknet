@@ -1,5 +1,6 @@
 package procesamiento.extractor;
 
+import Errores.ErrorFiltro;
 import procesamiento.enumeradores.Columna;
 import procesamiento.filtro.Filtrado;
 import procesamiento.filtro.Filtro;
@@ -12,22 +13,17 @@ public class Extractor extends Linea {
         setLinea(lineaSeparada);
     }
 
-    public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) {
-
+    public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) throws ErrorFiltro {
         String[] linea = getLinea();
 
         ArrayList<String> bufferColumnas = new ArrayList<>();
 
-        try {
-            if (Filtrado.esAceptadaLinea(linea, filtros)) {
-                for (Columna columna: Columna.values()) {
-                    if (columnasRequeridas.contains(columna)) {
-                        bufferColumnas.add(linea[columna.getPosicion()]);
-                    }
+        if (Filtrado.esAceptadaLinea(linea, filtros)) {
+            for (Columna columna: Columna.values()) {
+                if (columnasRequeridas.contains(columna)) {
+                    bufferColumnas.add(linea[columna.getPosicion()]);
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
 
         return bufferColumnas.toArray(new String[0]);

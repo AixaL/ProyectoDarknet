@@ -6,41 +6,27 @@ import constantes.Constantes;
 import constantes.ConstantesDeEjecucion;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static archivos.Herramientas.Herramientas.*;
 
-
-/**
- *
- * @author 93004
- */
 public class Archivo implements Constantes {
-    //TODO Clean
-    //static String line = "";
-    //public static String rutaDir = "";
-    //final String delimiter = ",";
-    //static String CSVFile = "C:\\Users\\93004\\Documents\\NetBeansProjects\\ProyectoDarknet\\Files\\Darknet.csv";
+    private static File[] archivosProcesados = new File[ArchivosTotales];
 
-    /*
-    public Archivo(){
-        try{
-            String archivoRutaEntrada = getRutaArchivoEntrada();
-            validarArchivo(archivoRutaEntrada);
-            //crearDirectorios(f , f);
-            separarArchivo(archivoRutaEntrada);
-        }catch(ErrorArchivo e){
-            System.out.println(e.getMessage());
-            //System.out.println(ex);
-        }
+    public static File[] getArchivosProcesados() {
+        return archivosProcesados;
     }
-     */
 
-    public static void procesarArchivo(String archivoRutaEntrada) {
+    private static void setArchivosProcesados(File[] archivosProcesados) {
+        Archivo.archivosProcesados = archivosProcesados;
+    }
+
+    public static void procesarArchivo(String archivoRutaEntrada) throws ErrorArchivo {
         try {
             validarArchivo(archivoRutaEntrada);
             separarArchivo(archivoRutaEntrada);
-        } catch(ErrorArchivo e) {
-            System.out.println(e.getMessage());
+        } catch(ErrorArchivo | ErrorEscritura e) {
+            throw new ErrorArchivo("Error de archivo/escritura");
         }
     }
     
@@ -61,7 +47,7 @@ public class Archivo implements Constantes {
         }
     }
     
-    private static void separarArchivo(String rutaArchivo){
+    private static void separarArchivo(String rutaArchivo) throws ErrorEscritura {
         int    numeroLineas     = Herramientas.getNumeroDeLineas(rutaArchivo);
         int    lineasPorArchivo = numeroLineas / ArchivosTotales;
         String rutaProceso      = ConstantesDeEjecucion.getRutaDirectorioProceso();
@@ -69,6 +55,7 @@ public class Archivo implements Constantes {
         BufferedReader bufferedReader;
         BufferedWriter bufferedWriter = null;
 
+        ArrayList<File> listaArchivosProcesados = new ArrayList<>();
         File archivoInicial = new File(rutaProceso + File.separator + getNombreSubArchivo(1));
 
         try {
@@ -87,6 +74,7 @@ public class Archivo implements Constantes {
             while ((linea = bufferedReader.readLine()) != null) {
                 if(contadorLineas % (lineasPorArchivo + 1) == 0) {
                     File nuevoArchivo = new File(rutaProceso + File.separator + getNombreSubArchivo(numeroArchivo));
+                    listaArchivosProcesados.add(nuevoArchivo);
                     fileWriter        = new FileWriter(nuevoArchivo);
                     bufferedWriter    = new BufferedWriter(fileWriter);
 
@@ -103,62 +91,15 @@ public class Archivo implements Constantes {
         } catch(IOException e) {
             System.out.println("Error en lectura/escritura de archivos "+ e);
         } finally {
-            if (bufferedWriter != null) {
-                try {
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                    System.out.println("No pudo cerrarse el BufferedWriter" + e);
-                }
+            setArchivosProcesados(listaArchivosProcesados.toArray(new File[0]));
+        }
+
+        if (bufferedWriter != null) {
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new ErrorEscritura("No pudo cerrarse el BufferedWriter" + e);
             }
         }
     }
-    
-    
-    /*
-    public static void crearDirectorios(File rutaAbsoluta, File rutaRelativa) {        
-        System.out.println("\t# Creacion de Directorios #");      
-        
-        rutaDir = rutaAbsoluta.getPath().replaceAll(rutaAbsoluta.getName(), "");
-        rutaDir = rutaDir + "cut";
-        System.out.println(rutaDir);
-        
-        
-        File X = new File(rutaDir);
-        if(X.exists()){
-            if (X.isDirectory()) {
-                File[] entries = X.listFiles();
-                if (entries != null) {
-                  for (File entry : entries) {
-                    entry.delete();
-                  }
-                }
-              }
-            if (X.delete()){
-                System.out.println("El directorio " + X + " ha sido borrado correctamente");
-                if (X.mkdirs()) {
-                    System.out.println("\t Se creo con exito el directorio: \t" + X.getAbsolutePath());
-                }
-                if (X.mkdir()) {
-                    System.out.println("\t Se creo con exito el directorio: \t" + X.getAbsolutePath());
-                }
-            }else{
-                System.out.println("El directorio " + X + " no se ha podido borrar");
-            }
-        }else{
-            if (X.mkdirs()) {
-            System.out.println("\t Se creo con exito el directorio: \t" + X.getAbsolutePath());
-            }
-            if (X.mkdir()) {
-                System.out.println("\t Se creo con exito el directorio: \t" + X.getAbsolutePath());
-            }
-        }
-
-        
-    }
-    
-    public void Dividir(){
-        
-    }
-
-     */
 }

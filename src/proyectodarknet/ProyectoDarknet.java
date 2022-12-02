@@ -10,10 +10,6 @@ import java.util.Scanner;
 
 import static constantes.ConstantesDeEjecucion.*;
 
-/**
- *
- * @author 93004
- */
 public class ProyectoDarknet implements Constantes {
 
     public static void main(String[] args) throws Exception {
@@ -36,18 +32,12 @@ public class ProyectoDarknet implements Constantes {
                 System.out.println("Nueva ruta: " + getRutaArchivoEntrada());
             }
 
-            //Scanner teclado2 = new Scanner(System.in);
-            //String columnas = teclado2.nextLine();
+            System.out.println("Ingresa las columnas deseadas (C00 - C84): ");
+            String columnasRequeridas = teclado.nextLine();
             
-            //System.out.println(columnas);
-            
-            System.out.println("Ingresa el criterio: ");
-            //Scanner teclado3 = new Scanner(System.in);
-            //String criterio = teclado3.nextLine();
-            
-            //System.out.println(criterio);
+            System.out.println("Ingresa el criterio de filtrado (CXX >|<|= Y): ");
+            String criterioFiltrado = teclado.nextLine();
 
-             //Archivo read = new Archivo();
              Archivo.procesarArchivo(getRutaArchivoEntrada());
 
              new Manager();
