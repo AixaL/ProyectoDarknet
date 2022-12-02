@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Extractor extends Linea {
-
-    public Extractor(String[] linea) {
-        setLinea(linea);
+    public Extractor(String[] lineaSeparada) {
+        setLinea(lineaSeparada);
     }
 
     public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) throws Exception {

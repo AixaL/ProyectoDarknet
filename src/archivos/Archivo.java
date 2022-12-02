@@ -1,102 +1,121 @@
 package archivos;
 import java.io.*;
 import Errores.*;
+import archivos.Herramientas.Herramientas;
+import constantes.Constantes;
+import constantes.ConstantesDeEjecucion;
+
 import java.io.File;
-import java.nio.file.FileSystems;
+
+import static archivos.Herramientas.Herramientas.*;
 
 
 /**
  *
  * @author 93004
  */
-public class Archivo {
-    static String line = "";
-    public static String rutaDir = "";
+public class Archivo implements Constantes {
+    //TODO Clean
+    //static String line = "";
+    //public static String rutaDir = "";
     //final String delimiter = ",";
-    static String CSVFile = "C:\\Users\\93004\\Documents\\NetBeansProjects\\ProyectoDarknet\\Files\\Darknet.csv";
-    
-    public Archivo(String ruta){
+    //static String CSVFile = "C:\\Users\\93004\\Documents\\NetBeansProjects\\ProyectoDarknet\\Files\\Darknet.csv";
+
+    /*
+    public Archivo(){
         try{
-            File f = new File(ruta);
-            ValidarArchivo(f);
-            crearDirectorios(f , f);
-            Separar(ruta);
+            String archivoRutaEntrada = getRutaArchivoEntrada();
+            validarArchivo(archivoRutaEntrada);
+            //crearDirectorios(f , f);
+            separarArchivo(archivoRutaEntrada);
         }catch(ErrorArchivo e){
             System.out.println(e.getMessage());
             //System.out.println(ex);
         }
     }
+     */
+
+    public static void procesarArchivo(String archivoRutaEntrada) {
+        try {
+            validarArchivo(archivoRutaEntrada);
+            separarArchivo(archivoRutaEntrada);
+        } catch(ErrorArchivo e) {
+            System.out.println(e.getMessage());
+        }
+    }
     
-    public static void ValidarArchivo(File f) throws ErrorArchivo {
-        if(!f.exists() && !f.isFile()){
+    private static void validarArchivo(String rutaArchivo) throws ErrorArchivo {
+        File archivo = new File(rutaArchivo);
+
+        if(!archivo.exists()){
             throw new ErrorArchivo("Hubo un error en el archivo. Revisa su existencia");
         }
-        if(f.length()==0){
+        if(!archivo.isFile()){
+            throw new ErrorArchivo("La ruta introducida no es un archivo. Por favor ingresa la ruta del archivo");
+        }
+        if(archivo.length() == 0){
             throw new ErrorArchivo("El archivo es muy pequeño");
         }
-        if(f.isDirectory()){
-            throw new ErrorArchivo("La ruta introducida fue de un directorio. Por favor ingresa la ruta del archivo");
-        }
-        if(!f.canWrite() && !f.canRead()){
+        if(!archivo.canWrite() && !archivo.canRead()){
             throw new ErrorArchivo("Revisa los permisos del archivo para poder continuar");
         }
-       
     }
     
-    public static void Separar(String ruta){
-       try{   
-            FileReader fileReader = new FileReader(ruta);  
-            BufferedReader reader = new BufferedReader(fileReader);
-            int numLineas = 0;
-            while ((line = reader.readLine()) != null)   //loops through every line until null found
-            {
-                numLineas++;
-            }
-            
-            int CPUs = Runtime.getRuntime().availableProcessors();
-            int dividir = numLineas / (CPUs * 4);
-            System.out.println(numLineas);
-            System.out.println(dividir);
-            
-            BufferedReader br = new BufferedReader(new FileReader(ruta)); 
-            //create thje first file which will have 1000 lines
-            File file = new File(rutaDir + File.separator + "FileNumber_"+1+".csv");
-            FileWriter fstream1 = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(fstream1);
-            
-            String line = "";
-            int count=1;
-            int file_Number=1;
-            while ((line = br.readLine()) != null) 
-            {
-                //System.out.println(count % (dividir + 1));
-                //if the line is divided by 1000 then create a new file with file count
-                if(count % (dividir + 1) == 0)
-                {
-                    out.close();
-                    File newFile = new File(rutaDir + File.separator +"FileNumber_"+file_Number+".csv");
-                    fstream1 = new FileWriter(newFile);
-                    file_Number++;
-                    out = new BufferedWriter(fstream1); 
-                }else{
-                    //System.out.println(count % (dividir + 1));
-                    //System.out.println(line);
-                }
-                 //line=line.substring(2, line.indexOf(","));
-                 out.write(line);
-                 out.newLine();
-                 line = "";
-                 count++;
-            }
-            out.close();
+    private static void separarArchivo(String rutaArchivo){
+        int    numeroLineas     = Herramientas.getNumeroDeLineas(rutaArchivo);
+        int    lineasPorArchivo = numeroLineas / ArchivosTotales;
+        String rutaProceso      = ConstantesDeEjecucion.getRutaProceso();
 
-       }catch(IOException e){
-           System.out.println(e);
-       }
+        BufferedReader bufferedReader;
+        BufferedWriter bufferedWriter = null;
+
+        File archivoInicial = new File(rutaProceso + File.separator + getNombreSubArchivo(1));
+
+        try {
+            FileReader fileReader = new FileReader(rutaArchivo);
+            FileWriter fileWriter = new FileWriter(archivoInicial);
+
+            bufferedReader = new BufferedReader(fileReader);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            
+            String linea;
+            bufferedReader.readLine(); // Borrar encabezado
+
+            int contadorLineas = 0;
+            int numeroArchivo  = 1;
+
+            while ((linea = bufferedReader.readLine()) != null) {
+                if(contadorLineas % (lineasPorArchivo + 1) == 0) {
+                    File nuevoArchivo = new File(rutaProceso + File.separator + getNombreSubArchivo(numeroArchivo));
+                    fileWriter        = new FileWriter(nuevoArchivo);
+                    bufferedWriter    = new BufferedWriter(fileWriter);
+
+                    numeroArchivo++;
+                }
+
+                bufferedWriter.write(linea);
+                bufferedWriter.newLine();
+                contadorLineas++;
+
+                bufferedWriter.flush();
+            }
+            System.out.println(contadorLineas);
+
+        } catch(IOException e) {
+            System.out.println("Error en lectura/escritura de archivos "+ e);
+        } finally {
+            if (bufferedWriter != null) {
+                try {
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    System.out.println("No pudo cerrarse el BufferedWriter" + e);
+                }
+            }
+        }
     }
     
     
-    
+    /*
     public static void crearDirectorios(File rutaAbsoluta, File rutaRelativa) {        
         System.out.println("\t# Creacion de Directorios #");      
         
@@ -141,4 +160,6 @@ public class Archivo {
     public void Dividir(){
         
     }
+
+     */
 }

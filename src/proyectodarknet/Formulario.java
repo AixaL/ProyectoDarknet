@@ -180,7 +180,7 @@ public class Formulario extends JFrame implements ActionListener {
             
             String ruta =  tname.getText();
             
-            Archivo read = new Archivo(ruta);
+            Archivo read = new Archivo();
         }
  
         else if (e.getSource() == reset) {

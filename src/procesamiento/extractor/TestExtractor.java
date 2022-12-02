@@ -33,12 +33,12 @@ public class TestExtractor {
         Tipo        tipo1       = C06.getTipo();
 
         Filtro[] filtros1 = {
-                new Filtro(
-                        posicion1,
-                        operador1,
-                        valor1,
-                        tipo1
-                )
+            new Filtro(
+                posicion1,
+                operador1,
+                valor1,
+                tipo1
+            )
         };
 
         System.out.print("Linea de salida: ");

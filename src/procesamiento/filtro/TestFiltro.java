@@ -29,7 +29,7 @@ public class TestFiltro {
         System.out.println(operador1);
         System.out.println(valor1);
         System.out.println(tipo1);
-         System.out.println("----------------");
+        System.out.println("----------------");
         
         int         posicion2   = C06.getPosicion();
         Operador    operador2   = Operador.EQUALS;

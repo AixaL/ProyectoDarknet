@@ -1,21 +1,17 @@
 
 package procesamiento.worker;
-import static procesamiento.enumeradores.Columna.C06;
+
+import procesamiento.enumeradores.Columna;
 import procesamiento.enumeradores.Operador;
 import procesamiento.enumeradores.Tipo;
-import procesamiento.filtro.Filtrado;
-import procesamiento.filtro.Filtro;
-import java.io.File;
-import archivos.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Set;
-import procesamiento.enumeradores.Columna;
-import static procesamiento.enumeradores.Columna.*;
 import procesamiento.extractor.Extractor;
+import procesamiento.filtro.Filtro;
+
+import java.io.*;
+import java.util.Set;
+
+import static constantes.ConstantesDeEjecucion.*;
+import static procesamiento.enumeradores.Columna.*;
 
 /**
  *
@@ -23,20 +19,21 @@ import procesamiento.extractor.Extractor;
  */
 public class Worker implements Runnable{
     
-    private String nombreA;
-    private File file;
-    private File fileResultado;
+    //private String nombreA;
+    //private File file;
+   // private File fileResultado;
+    private final File[] paqueteArchivos;
     
-    public Worker(String nombreArchivo, File f , File fr){
+    public Worker(File[] paqueteArchivos){
         
-        System.out.println(f.getAbsolutePath());
-        System.out.println(fr.getAbsolutePath());
+        //System.out.println(f.getAbsolutePath());
+        //System.out.println(fr.getAbsolutePath());
         
-        nombreA = nombreArchivo;
-        file = f;
-        fileResultado = fr;
-        
-        
+        //nombreA = nombreArchivo;
+        //file = f;
+        //fileResultado = fr;
+
+        this.paqueteArchivos = paqueteArchivos;
         
     }
     
@@ -48,7 +45,7 @@ public class Worker implements Runnable{
         int         posicion1   = C02.getPosicion();
         Operador    operador1   = Operador.MORETHAN;
         String      valor1      = "40000"; // Valor aceptado
-        Tipo        tipo1      = C02.getTipo();
+        Tipo        tipo1       = C02.getTipo();
         
         Filtro[] filtros1 = {
             new Filtro(
@@ -58,9 +55,62 @@ public class Worker implements Runnable{
                 tipo1
             )
         };
-        
+
+        for (File archivo : paqueteArchivos){
+            BufferedReader bufferedReader;
+            BufferedWriter bufferedWriter = null;
+
+            try {
+                FileReader fileReader = new FileReader(archivo);
+                FileWriter fileWriter = new FileWriter(getRutaArchivoSalida());
+
+                bufferedReader = new BufferedReader(fileReader);
+                bufferedWriter = new BufferedWriter(fileWriter);
+
+                String lineaEntrada;
+
+                while ((lineaEntrada = bufferedReader.readLine()) != null) {
+                    StringBuilder lineaSalida = new StringBuilder();
+
+                    String[]  lineaSeparada    = lineaEntrada.trim().split(",");
+                    Extractor extractor        = new Extractor(lineaSeparada);
+                    String[]  extractorValores = extractor.getValores(columnasRequeridas1, filtros1);
+                    int       indiceSiguiente  = 0;
+
+                    for (String elemento : extractorValores) {
+                        lineaSalida.append(elemento);
+
+                        if (++indiceSiguiente < extractorValores.length) {
+                            lineaSalida.append(",");
+                        }
+                    }
+                    if (!lineaSalida.isEmpty()) {
+                        bufferedWriter.write(lineaSalida.toString());
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
+                    }
+
+                    bufferedWriter.flush();
+                }
+            } catch (IOException e) {
+                System.out.println("Error en la lectura/escritura de archivos" + e);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (bufferedWriter != null) {
+                    try {
+                        bufferedWriter.close();
+                    } catch (IOException e) {
+                        System.out.println("No pudo cerrarse el BufferedWriter" + e);
+                    }
+                }
+            }
+
+        }
+
+        /*
         try{
-            System.out.println(fileResultado.getAbsoluteFile());
+            //System.out.println(fileResultado.getAbsoluteFile());
             FileWriter fstream1 = new FileWriter(fileResultado);
             BufferedWriter out = new BufferedWriter(fstream1);
             
@@ -94,6 +144,8 @@ public class Worker implements Runnable{
         }catch(IOException e){
            System.out.println(e);
         }
+
+         */
     }
         
 }
