@@ -9,10 +9,10 @@ import procesamiento.worker.*;
 import constantes.Constantes;
 
 public class Manager extends ManagementInfo implements Constantes {
-    public void manager() {
+    public Manager() {
         this.poolWorkers = new Thread[Hilos];
 
-        File   directorioProceso = new File(getRutaProceso());
+        File   directorioProceso = new File(getRutaDirectorioProceso());
         File[] archivosProceso   = directorioProceso.listFiles();
 
         if (archivosProceso != null) {

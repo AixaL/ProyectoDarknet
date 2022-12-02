@@ -64,7 +64,7 @@ public class Archivo implements Constantes {
     private static void separarArchivo(String rutaArchivo){
         int    numeroLineas     = Herramientas.getNumeroDeLineas(rutaArchivo);
         int    lineasPorArchivo = numeroLineas / ArchivosTotales;
-        String rutaProceso      = ConstantesDeEjecucion.getRutaProceso();
+        String rutaProceso      = ConstantesDeEjecucion.getRutaDirectorioProceso();
 
         BufferedReader bufferedReader;
         BufferedWriter bufferedWriter = null;

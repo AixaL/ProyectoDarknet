@@ -7,7 +7,7 @@ import static archivos.Herramientas.Herramientas.vaciarDirectorio;
 import static constantes.ConstantesDeEjecucion.*;
 
 public class TestHerramientas {
-    static String archivoTemp    = getRutaProceso() + File.separator + "temp.txt";
+    static String archivoTemp = getRutaDirectorioProceso() + File.separator + "temp.txt";
 
     public static void main(String[] args) throws IOException {
         System.out.println("Número de líneas en "+ getRutaArchivoEntrada() + " : " + Herramientas.getNumeroDeLineas(getRutaArchivoEntrada()));
@@ -16,7 +16,7 @@ public class TestHerramientas {
 
         File temp = new File(archivoTemp);
         System.out.println("Archivo temporal creado con exito: " + temp.createNewFile());
-        vaciarDirectorio(getRutaProceso());
+        vaciarDirectorio(getRutaDirectorioProceso());
         System.out.println("Archivo temporal borrado con exito: " + !temp.exists());
     }
 }

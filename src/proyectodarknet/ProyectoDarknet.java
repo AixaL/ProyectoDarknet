@@ -4,10 +4,11 @@ import archivos.Archivo;
 import constantes.Constantes;
 import procesamiento.manager.Manager;
 
+import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static constantes.ConstantesDeEjecucion.getRutaArchivoEntrada;
+import static constantes.ConstantesDeEjecucion.*;
 
 /**
  *
@@ -21,8 +22,20 @@ public class ProyectoDarknet implements Constantes {
 
         System.out.println("Ingresa la ruta del archivo: ");
         try {
+            File directorioEntrada = new File(getRutaDirectorioEntrada());
+            if (directorioEntrada.mkdirs()){
+                System.out.println("Directorio creado: " + directorioEntrada.getAbsolutePath());
+            }
 
-            System.out.println("Ingresa las columnas: ");
+            System.out.println("Ingresa la ruta del archivo o presione ENTER para ruta defecto (/Archivos/Entrada/Darknet.csv): ");
+            Scanner teclado = new Scanner(System.in);
+            String  ruta    = teclado.nextLine();
+
+            if (!ruta.isBlank()) {
+                setRutaArchivoEntrada(ruta);
+                System.out.println("Nueva ruta: " + getRutaArchivoEntrada());
+            }
+
             //Scanner teclado2 = new Scanner(System.in);
             //String columnas = teclado2.nextLine();
             
@@ -37,11 +50,10 @@ public class ProyectoDarknet implements Constantes {
              //Archivo read = new Archivo();
              Archivo.procesarArchivo(getRutaArchivoEntrada());
 
-             Manager m = new Manager();
-             m.manager();
+             new Manager();
              
-        } catch (InputMismatchException ex ) {
-            System.out.println(ex);
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("Error en la entrada " + e);
         }
         
     }
