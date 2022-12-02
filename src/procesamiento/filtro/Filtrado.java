@@ -8,13 +8,13 @@ public class Filtrado {
 
         for (Filtro filtro: filtros) {
             switch (filtro.getTipo()) {
-
                 case STRING:
                     if (filtro.getOperador().equals(EQUALS)) {
                         if (!linea[filtro.getPosicion()].equals(filtro.getValor()))
                             // Negating equals
                             return false;
                     } else {
+                        System.out.println("Valor de operador no esperado para String");
                         throw new Exception("Valor de operador no esperado para String");
                     }
                     break;
@@ -40,11 +40,13 @@ public class Filtrado {
                                 return false;
                             break;
                         default:
+                            System.out.println("Valor de operador no esperado para Double");
                             throw new Exception("Valor de operador no esperado para Double");
                     }
                     break;
 
                 default:
+                    System.out.println("Tipo de variable no contemplado");
                     throw new Exception("Tipo de variable no contemplado");
 
             }

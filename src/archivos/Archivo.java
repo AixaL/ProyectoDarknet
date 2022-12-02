@@ -99,7 +99,6 @@ public class Archivo implements Constantes {
 
                 bufferedWriter.flush();
             }
-            System.out.println(contadorLineas);
 
         } catch(IOException e) {
             System.out.println("Error en lectura/escritura de archivos "+ e);

@@ -2,7 +2,7 @@ package procesamiento.manager;
 
 import static constantes.ConstantesDeEjecucion.*;
 
-import java.io.File;
+import java.io.*;
 import java.util.Arrays;
 
 import procesamiento.worker.*;
@@ -15,6 +15,13 @@ public class Manager extends ManagementInfo implements Constantes {
         File   directorioProceso = new File(getRutaDirectorioProceso());
         File[] archivosProceso   = directorioProceso.listFiles();
 
+        try {
+            fileWriter     = new FileWriter(getRutaArchivoSalida());
+            bufferedWriter = new BufferedWriter(fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException("No puede usarse el archivo de salida" + e);
+        }
+
         if (archivosProceso != null) {
             int numeroWorker = 0;
 
@@ -25,8 +32,11 @@ public class Manager extends ManagementInfo implements Constantes {
                     new Thread(
                         new Worker(paqueteArchivos)
                     );
+                poolWorkers[numeroWorker].start();
                 numeroWorker++;
             }
+
+
         } else {
             System.out.println("No existen archivos a ser procesados.");
         }
@@ -55,8 +65,19 @@ public class Manager extends ManagementInfo implements Constantes {
             }
         }
 
+        try {
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 //        poolWorkers.shutdown();
 
     }
+
+    public static BufferedWriter getBufferedWriter() {
+        return bufferedWriter;
+    }
+
 
 }

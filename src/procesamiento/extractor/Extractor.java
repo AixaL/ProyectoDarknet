@@ -12,18 +12,22 @@ public class Extractor extends Linea {
         setLinea(lineaSeparada);
     }
 
-    public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) throws Exception {
+    public String[] getValores(Set<Columna> columnasRequeridas, Filtro[] filtros) {
 
         String[] linea = getLinea();
 
         ArrayList<String> bufferColumnas = new ArrayList<>();
 
-        if (Filtrado.esAceptadaLinea(linea, filtros)) {
-            for (Columna columna: Columna.values()) {
-                if (columnasRequeridas.contains(columna)) {
-                    bufferColumnas.add(linea[columna.getPosicion()]);
+        try {
+            if (Filtrado.esAceptadaLinea(linea, filtros)) {
+                for (Columna columna: Columna.values()) {
+                    if (columnasRequeridas.contains(columna)) {
+                        bufferColumnas.add(linea[columna.getPosicion()]);
+                    }
                 }
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         return bufferColumnas.toArray(new String[0]);

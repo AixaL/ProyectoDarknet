@@ -7,11 +7,14 @@ import procesamiento.enumeradores.Tipo;
 import procesamiento.extractor.Extractor;
 import procesamiento.filtro.Filtro;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Set;
 
-import static constantes.ConstantesDeEjecucion.*;
 import static procesamiento.enumeradores.Columna.*;
+import static procesamiento.manager.Manager.getBufferedWriter;
 
 /**
  *
@@ -56,16 +59,17 @@ public class Worker implements Runnable{
             )
         };
 
-        for (File archivo : paqueteArchivos){
+        for (File archivo : paqueteArchivos) {
+
             BufferedReader bufferedReader;
-            BufferedWriter bufferedWriter = null;
+            //BufferedWriter bufferedWriter = null;
 
             try {
                 FileReader fileReader = new FileReader(archivo);
-                FileWriter fileWriter = new FileWriter(getRutaArchivoSalida());
+                //FileWriter fileWriter = new FileWriter(getRutaArchivoSalida());
 
                 bufferedReader = new BufferedReader(fileReader);
-                bufferedWriter = new BufferedWriter(fileWriter);
+                //bufferedWriter = new BufferedWriter(fileWriter);
 
                 String lineaEntrada;
 
@@ -84,26 +88,17 @@ public class Worker implements Runnable{
                             lineaSalida.append(",");
                         }
                     }
+
                     if (!lineaSalida.isEmpty()) {
-                        bufferedWriter.write(lineaSalida.toString());
-                        bufferedWriter.newLine();
-                        bufferedWriter.flush();
+                        getBufferedWriter().write(lineaSalida.toString().concat(System.lineSeparator()));
                     }
 
-                    bufferedWriter.flush();
+                    getBufferedWriter().flush();
                 }
             } catch (IOException e) {
                 System.out.println("Error en la lectura/escritura de archivos" + e);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-            } finally {
-                if (bufferedWriter != null) {
-                    try {
-                        bufferedWriter.close();
-                    } catch (IOException e) {
-                        System.out.println("No pudo cerrarse el BufferedWriter" + e);
-                    }
-                }
+                System.out.println("Valor nulo. Final del archivo encontrado.");
             }
 
         }
