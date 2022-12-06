@@ -14,6 +14,8 @@ public class ProyectoDarknet implements Constantes {
 
     public static void main(String[] args) throws Exception {
 
+        Formulario form = new Formulario();
+
         System.out.println("CPUs disponibles: " + Hilos);
 
         System.out.println("Ingresa la ruta del archivo: ");
@@ -40,7 +42,7 @@ public class ProyectoDarknet implements Constantes {
 
              Archivo.procesarArchivo(getRutaArchivoEntrada());
 
-             new Manager();
+            //  new Manager();
              
         } catch (InputMismatchException e) {
             throw new InputMismatchException("Error en la entrada " + e);

@@ -23,28 +23,32 @@ import static procesamiento.manager.Manager.getBufferedWriter;
  */
 public class Worker implements Runnable {
     private final File[] paqueteArchivos;
+    private final Filtro[] filtro;
+    private final Set<Columna> columnas;
     
-    public Worker(File[] paqueteArchivos){
+    public Worker(File[] paqueteArchivos, Filtro[] filtro, Set<Columna> columnas){
         this.paqueteArchivos = paqueteArchivos;
+        this.filtro = filtro;
+        this.columnas = columnas;
     }
     
     @Override
     public void run() {
-        Set<Columna> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00);
+        // Set<Columna> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00);
         
-        int         posicion1   = C02.getPosicion();
-        Operador    operador1   = Operador.MORETHAN;
-        String      valor1      = "40000"; // Valor aceptado
-        Tipo        tipo1       = C02.getTipo();
+        // int         posicion1   = C02.getPosicion();
+        // Operador    operador1   = Operador.MORETHAN;
+        // String      valor1      = "40000"; // Valor aceptado
+        // Tipo        tipo1       = C02.getTipo();
         
-        Filtro[] filtros1 = {
-            new Filtro(
-                posicion1,
-                operador1,
-                valor1,
-                tipo1
-            )
-        };
+        // Filtro[] filtros1 = {
+        //     new Filtro(
+        //         posicion1,
+        //         operador1,
+        //         valor1,
+        //         tipo1
+        //     )
+        // };
 
         for (File archivo : paqueteArchivos) {
             BufferedReader bufferedReader;
@@ -60,7 +64,7 @@ public class Worker implements Runnable {
 
                     String[]  lineaSeparada    = lineaEntrada.trim().split(",");
                     Extractor extractor        = new Extractor(lineaSeparada);
-                    String[]  extractorValores = extractor.getValores(columnasRequeridas1, filtros1);
+                    String[]  extractorValores = extractor.getValores(columnas, filtro);
                     int       indiceSiguiente  = 0;
 
                     for (String elemento : extractorValores) {
@@ -71,7 +75,8 @@ public class Worker implements Runnable {
                         }
                     }
 
-                    if (!lineaSalida.isEmpty()) {
+                    // if (!lineaSalida.isEmpty()) {
+                    if (lineaSalida.toString() != "") {
                         getBufferedWriter().write(lineaSalida.toString().concat(System.lineSeparator()));
                     }
 

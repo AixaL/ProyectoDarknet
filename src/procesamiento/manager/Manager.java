@@ -9,10 +9,14 @@ import java.util.Arrays;
 import Errores.ErrorArchivo;
 import Errores.ErrorEscritura;
 import procesamiento.worker.*;
+import java.util.Set;
 import constantes.Constantes;
+import procesamiento.filtro.Filtro;
+import procesamiento.enumeradores.Columna;
 
 public class Manager extends ManagementInfo implements Constantes {
-    public Manager() throws ErrorEscritura, InterruptedException, ErrorArchivo {
+
+    public Manager(Filtro[] filtro, Set<Columna> columnas ) throws ErrorEscritura, InterruptedException, ErrorArchivo {
         this.poolWorkers = new Thread[Hilos];
 
         File[] archivosProceso = getArchivosProcesados();
@@ -32,7 +36,7 @@ public class Manager extends ManagementInfo implements Constantes {
 
                 this.poolWorkers[numeroWorker] =
                     new Thread(
-                        new Worker(paqueteArchivos)
+                        new Worker(paqueteArchivos, filtro, columnas)
                     );
                 poolWorkers[numeroWorker].start();
                 numeroWorker++;
@@ -48,6 +52,8 @@ public class Manager extends ManagementInfo implements Constantes {
                 throw new InterruptedException("El hilo +" + i + " ha sido interrumpido");
             }
         }
+
+        System.out.println("Acabo!");
 
         try {
             bufferedWriter.flush();

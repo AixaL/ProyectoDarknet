@@ -1,36 +1,57 @@
 package proyectodarknet;
+import Errores.ErrorArchivo;
+import Errores.ErrorEscritura;
 import archivos.Archivo;
 import procesamiento.enumeradores.Columna;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import procesamiento.enumeradores.Operador;
+import procesamiento.enumeradores.Tipo;
+import procesamiento.extractor.Extractor;
+import procesamiento.filtro.Filtro;
+import procesamiento.manager.Manager;
+import static constantes.ConstantesDeEjecucion.*;
+
  
 public class Formulario extends JFrame implements ActionListener {
  
     // Components of the Form
     private Container c;
-    private JLabel title;
-    private JLabel name;
-    private JTextField tname;
-    private JLabel mno;
-    private JTextField tmno;
+    private JLabel titulo;
+    private JLabel rutaText;
+    private JLabel label;
+    private JTextField ruta;
     private JLabel gender;
-    private JLabel dob;
-    private JComboBox date;
+    private JLabel colText;
+    private JComboBox colInteres;
+    private JComboBox cri;
+    private JComboBox op;
     private JLabel add;
+    private JLabel criT;
+    private JTextField criText;
     private JTextField tadd;
     private JCheckBox term;
     private JButton sub;
     private JButton reset;
-    private JTextArea tout;
+    private JTextPane tout;
     private JLabel res;
     private JTextArea resadd;
     private JButton addC;
- 
- 
-    ArrayList<String> columnas = new ArrayList<>();
     
+    private String operadores[] = { "=", ">", "<"};
+    
+//    private String numeradores[] = {'a','b','c','d','e'};
+ 
+ 
+    ArrayList<String> columnasName = new ArrayList<>();
+    ArrayList<Columna> columnas = new ArrayList<>();
+    ArrayList<String> columnasId = new ArrayList<>();
     ArrayList<String> columnasSel = new ArrayList<>();
     // constructor, to initialize the components
     // with default values.
@@ -38,7 +59,9 @@ public class Formulario extends JFrame implements ActionListener {
     {
         for (Columna columna: Columna.values()) {
                 System.out.println(columna);
-                columnas.add(columna.getNombre());
+                columnasName.add(columna.getNombre());
+                columnas.add(columna);
+//                columnasId.add(columna.getPosicion());
         }
         System.out.println(columnas);
         
@@ -50,36 +73,37 @@ public class Formulario extends JFrame implements ActionListener {
         c = getContentPane();
         c.setLayout(null);
  
-        title = new JLabel("Registration Form");
-        title.setFont(new Font("Arial", Font.PLAIN, 30));
-        title.setSize(300, 30);
-        title.setLocation(300, 30);
-        c.add(title);
+        titulo = new JLabel("Registration Form");
+        titulo.setFont(new Font("Arial", Font.PLAIN, 30));
+        titulo.setSize(300, 30);
+        titulo.setLocation(300, 30);
+        c.add(titulo);
  
-        name = new JLabel("Ingresa la ruta de tu archivo");
-        name.setFont(new Font("Arial", Font.PLAIN, 20));
-        name.setSize(350, 20);
-        name.setLocation(100, 100);
-        c.add(name);
+        rutaText = new JLabel("Ingresa la ruta de tu archivo");
+        rutaText.setFont(new Font("Arial", Font.PLAIN, 20));
+        rutaText.setSize(350, 20);
+        rutaText.setLocation(100, 100);
+        c.add(rutaText);
  
-        tname = new JTextField();
-        tname.setFont(new Font("Arial", Font.PLAIN, 15));
-        tname.setSize(350, 40);
-        tname.setLocation(100, 130);
-        c.add(tname);
+        ruta = new JTextField();
+        ruta.setFont(new Font("Arial", Font.PLAIN, 15));
+        ruta.setSize(350, 40);
+        ruta.setLocation(100, 130);
+        c.add(ruta);
  
-        dob = new JLabel("Columnas de interes");
-        dob.setFont(new Font("Arial", Font.PLAIN, 20));
-        dob.setSize(200, 20);
-        dob.setLocation(100, 200);
-        c.add(dob);
+        colText = new JLabel("Columnas de interes");
+        colText.setFont(new Font("Arial", Font.PLAIN, 20));
+        colText.setSize(200, 20);
+        colText.setLocation(100, 200);
+        c.add(colText);
  
-        String[] array = columnas.toArray(new String[columnas.size()]);
-        date = new JComboBox(array);
-        date.setFont(new Font("Arial", Font.PLAIN, 15));
-        date.setSize(250, 40);
-        date.setLocation(100, 230);
-        c.add(date);
+        String[] array = columnasName.toArray(new String[columnasName.size()]);
+        
+        colInteres = new JComboBox(array);
+        colInteres.setFont(new Font("Arial", Font.PLAIN, 15));
+        colInteres.setSize(250, 40);
+        colInteres.setLocation(100, 230);
+        c.add(colInteres);
         
         addC = new JButton("Agregar");
         addC.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -87,52 +111,71 @@ public class Formulario extends JFrame implements ActionListener {
         addC.setLocation(350, 230);
         addC.addActionListener(this);
         c.add(addC);
+        
+        label = new JLabel("Columnas:");
+        label.setFont(new Font("Arial", Font.PLAIN, 12));
+        label.setSize(400, 80);
+        label.setLocation(100, 250);
+        c.add(label);
        
  
-        add = new JLabel("Criterio de busqueda");
-        add.setFont(new Font("Arial", Font.PLAIN, 20));
-        add.setSize(400, 20);
-        add.setLocation(100, 300);
-        c.add(add);
+        criT = new JLabel("Criterio de busqueda");
+        criT.setFont(new Font("Arial", Font.PLAIN, 16));
+        criT.setSize(400, 20);
+        criT.setLocation(100, 330);
+        c.add(criT);
+        
+        cri = new JComboBox(array);
+        cri.setFont(new Font("Arial", Font.PLAIN, 15));
+        cri.setSize(180, 40);
+        cri.setLocation(100, 370);
+        c.add(cri);
+        
+        op = new JComboBox(operadores);
+        op.setFont(new Font("Arial", Font.PLAIN, 15));
+        op.setSize(50, 40);
+        op.setLocation(280, 370);
+        c.add(op);
  
-        tadd = new JTextField();
-        tadd.setFont(new Font("Arial", Font.PLAIN, 15));
-        tadd.setSize(350, 50);
-        tadd.setLocation(100, 330);
-        c.add(tadd);
+        criText = new JTextField();
+        criText.setFont(new Font("Arial", Font.PLAIN, 15));
+        criText.setSize(130, 40);
+        criText.setLocation(330, 370);
+        c.add(criText);
  
         term = new JCheckBox("Filtros de tiempo");
         term.setFont(new Font("Arial", Font.PLAIN, 15));
         term.setSize(250, 20);
-        term.setLocation(150, 400);
+        term.setLocation(150, 420);
         c.add(term);
  
         sub = new JButton("Submit");
         sub.setFont(new Font("Arial", Font.PLAIN, 15));
         sub.setSize(100, 20);
-        sub.setLocation(150, 450);
+        sub.setLocation(150, 470);
         sub.addActionListener(this);
         c.add(sub);
  
         reset = new JButton("Reset");
         reset.setFont(new Font("Arial", Font.PLAIN, 15));
         reset.setSize(100, 20);
-        reset.setLocation(270, 450);
+        reset.setLocation(270, 470);
         reset.addActionListener(this);
         c.add(reset);
  
-        tout = new JTextArea();
+        tout = new JTextPane();
+        tout.setContentType("text/html");
         tout.setFont(new Font("Arial", Font.PLAIN, 15));
         tout.setSize(300, 400);
         tout.setLocation(500, 100);
-        tout.setLineWrap(true);
+//        tout.setLineWrap(true);
         tout.setEditable(false);
         c.add(tout);
  
         res = new JLabel("");
         res.setFont(new Font("Arial", Font.PLAIN, 20));
         res.setSize(500, 25);
-        res.setLocation(100, 500);
+        res.setLocation(100, 520);
         c.add(res);
  
         resadd = new JTextArea();
@@ -151,11 +194,24 @@ public class Formulario extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == addC) {
-                String data2 =  (String)date.getSelectedItem();
+                String data2 =  (String)colInteres.getSelectedItem();
+
+                
+                System.out.println(label.getText());
+                
+                String texto = label.getText().replaceAll("</html>", "");
+                texto = texto.replaceAll("<html>", "");
+
+                
+                texto = texto + " / " + data2;
                 
                 columnasSel.add(data2);
                 
-                String data3 = "Address : " + tadd.getText();
+//                String data3 = "Address : " + tadd.getText();
+                
+                label.setText(label.getText() +" "+ data2);
+                final String html = "<html>"+ texto +"</html>";
+                label.setText(html);
 //                tout.setText(data + data1 + data2 + data3);
 //                tout.setEditable(false);
 //                res.setText("Registration Successfully..");
@@ -169,28 +225,111 @@ public class Formulario extends JFrame implements ActionListener {
         }
         
         else if(e.getSource() == sub){
-            tout.append( "Columnas de interes \n");
+
+            Set<Columna> columnasRequeridas1 =  new HashSet<Columna>();
+            int posicion1 = 0;
+            Tipo tipo1 = Tipo.DOUBLE;
+//            tout.append( "Columnas de interes \n");
+            String list = "";
              for (int i=0;i<columnasSel.size();i++) {
                     System.out.println(columnasSel.get(i));
-                    tout.append(columnasSel.get(i) + "\n");
+                     for (int j=0;j<columnas.size();j++) {
+                        if(columnas.get(j).getNombre() == columnasSel.get(i) ){
+                            System.out.println(columnas.get(j).getTipo());
+                            columnasRequeridas1.add(columnas.get(j));
+                        }
+                        
+                    }
+                    list = list + "<li>" + columnasSel.get(i) + "</li>";
                   }
-            tout.append( "Ruta del archivo \n");
+//            tout.append( "Ruta del archivo \n");
             
-            tout.append( "Criterio de filtrado \n");
+            System.out.print(columnasRequeridas1);
+//          tout.append( "Criterio de filtrado \n");
+            String criterioB = (String)cri.getSelectedItem()+ " " +(String) op.getSelectedItem()+ " " + criText.getText();
             
-            String ruta =  tname.getText();
+            tout.setText("<h2>Datos finales </h2>"
+                    + "<h4>Columnas:</h4>"
+                    + "<ul>"+list+ "</ul>"
+                    + "<h4>Criterio de busqueda</h4>"
+                    + "<p>"+criterioB+"</p>"
+                    + "<h4>Ruta del archivo: </h4>"
+                    + "<p>"+ruta.getText()+"</p>");
+
+            // for (int i=0;i<columnasSel.size();i++) {
+            //     System.out.println(columnasSel.get(i));
+            //     list = list + "<li>" + columnasSel.get(i) + "</li>";
+            // }
+
+
+           
+            for (int j=0;j<columnas.size();j++) {
+                if(columnas.get(j).getNombre() == cri.getSelectedItem() ){
+                    posicion1 = columnas.get(j).getPosicion();
+                    tipo1 = columnas.get(j).getTipo();
+                }
+                
+            }
+
+
+            // int         posicion1   = posicion1.getPosicion();
+            Operador    operador1   = Operador.MORETHAN;
+            String      valor1      = "40000"; // Valor aceptado
+            
+            Filtro[] filtros1 = {
+                new Filtro(
+                    posicion1,
+                    operador1,
+                    valor1,
+                    tipo1
+                )
+            };
+
+
+
+            if (!ruta.getText().isBlank()) {
+                setRutaArchivoEntrada(ruta.getText());
+                System.out.println("Nueva ruta: " + getRutaArchivoEntrada());
+            }
+
+            try {
+                Archivo.procesarArchivo(getRutaArchivoEntrada());
+            } catch (ErrorArchivo ex) {
+                Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+            
+           
+            try {
+                new Manager( filtros1 , columnasRequeridas1 );
+            } catch (ErrorEscritura ex) {
+               System.out.println(ex);
+            } catch (InterruptedException ex) {
+                System.out.println(ex);
+                // Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ErrorArchivo ex) {
+                System.out.println(ex);
+                // Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+            
+            String rutan =  ruta.getText();
             
             Archivo read = new Archivo();
         }
  
         else if (e.getSource() == reset) {
             String def = "";
-            tname.setText(def);
-            tadd.setText(def);
-            res.setText(def);
+            ruta.setText(def);
+            criText.setText(def);
+//            cri.setText(def);
+            label.setText("Columnas: ");
             tout.setText(def);
             term.setSelected(false);
-            date.setSelectedIndex(0);
+            cri.setSelectedIndex(0);
+            colInteres.setSelectedIndex(0);
+            op.setSelectedIndex(0);
             resadd.setText(def);
         }
     }
