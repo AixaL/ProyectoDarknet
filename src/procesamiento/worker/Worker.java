@@ -76,7 +76,7 @@ public class Worker implements Runnable {
                     }
 
                     // if (!lineaSalida.isEmpty()) {
-                    if (lineaSalida.toString() != "") {
+                    if (lineaSalida.toString().length()>1) {
                         getBufferedWriter().write(lineaSalida.toString().concat(System.lineSeparator()));
                     }
 
