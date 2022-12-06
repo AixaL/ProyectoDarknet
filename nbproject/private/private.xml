@@ -3,11 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/archivos/Filtrar.java</file>
-            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/archivos/Leer.java</file>
-            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/Errores/ErrorArchivo.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/archivos/Herramientas/Herramientas.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/extractor/Extractor.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/extractor/Linea.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/constantes/Constantes.java</file>
             <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/proyectodarknet/ProyectoDarknet.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/manager/ManagementInfo.java</file>
             <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/archivos/Archivo.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/filtro/Filtro.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/proyectodarknet/Formulario.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/manager/Manager.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/enumeradores/Columna.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/filtro/TestFiltro.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/filtro/Filtrado.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/procesamiento/worker/Worker.java</file>
+            <file>file:/C:/Users/93004/Documents/NetBeansProjects/ProyectoDarknet/src/constantes/ConstantesDeEjecucion.java</file>
         </group>
     </open-files>
 </project-private>
