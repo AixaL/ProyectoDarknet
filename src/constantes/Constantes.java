@@ -8,6 +8,7 @@ public interface Constantes {
     int    ArchivosPorHilo      = 4;
     int    ArchivosTotales      = Hilos * ArchivosPorHilo;
     Path   RutaEjecucion        = Paths.get("").toAbsolutePath();
-    String NombreArchivoEntrada = "Darknet.csv";
-    String NombreArchivoSalida  = "Resultados.csv";
+    String FormatoArchivo       = ".csv";
+    String NombreArchivoEntrada = "Darknet";
+    String EtiquetaSalida       = "_filtered";
 }
