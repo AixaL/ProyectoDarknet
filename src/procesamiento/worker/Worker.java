@@ -3,8 +3,6 @@ package procesamiento.worker;
 
 import Errores.ErrorFiltro;
 import procesamiento.enumeradores.Columna;
-import procesamiento.enumeradores.Operador;
-import procesamiento.enumeradores.Tipo;
 import procesamiento.extractor.Extractor;
 import procesamiento.filtro.Filtro;
 
@@ -14,7 +12,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Set;
 
-import static procesamiento.enumeradores.Columna.*;
 import static procesamiento.manager.Manager.getBufferedWriter;
 
 /**
@@ -34,22 +31,6 @@ public class Worker implements Runnable {
     
     @Override
     public void run() {
-        // Set<Columna> columnasRequeridas1 = Set.of(C84, C05, C06, C83, C00);
-        
-        // int         posicion1   = C02.getPosicion();
-        // Operador    operador1   = Operador.MORETHAN;
-        // String      valor1      = "40000"; // Valor aceptado
-        // Tipo        tipo1       = C02.getTipo();
-        
-        // Filtro[] filtros1 = {
-        //     new Filtro(
-        //         posicion1,
-        //         operador1,
-        //         valor1,
-        //         tipo1
-        //     )
-        // };
-
         for (File archivo : paqueteArchivos) {
             BufferedReader bufferedReader;
 
@@ -75,7 +56,6 @@ public class Worker implements Runnable {
                         }
                     }
 
-                    // if (!lineaSalida.isEmpty()) {
                     if (lineaSalida.toString().length()>1) {
                         getBufferedWriter().write(lineaSalida.toString().concat(System.lineSeparator()));
                     }
