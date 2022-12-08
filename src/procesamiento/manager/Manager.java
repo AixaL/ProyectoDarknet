@@ -17,7 +17,7 @@ import procesamiento.enumeradores.Columna;
 public class Manager extends ManagementInfo implements Constantes {
 
     public Manager(Filtro[] filtro, Set<Columna> columnas ) throws ErrorEscritura, InterruptedException, ErrorArchivo {
-        this.poolWorkers = new Thread[Hilos];
+        this.poolWorkers = new Thread[ArchivosTotales];
 
         File[] archivosProceso = getArchivosProcesados();
 
@@ -31,7 +31,7 @@ public class Manager extends ManagementInfo implements Constantes {
         if (archivosProceso != null) {
             int numeroWorker = 0;
 
-            for (int contador = 0; contador < ArchivosTotales; contador = contador + ArchivosPorHilo) {
+            for (int contador = 0; contador < ArchivosTotales; contador += ArchivosPorHilo) {
                 File[] paqueteArchivos = Arrays.copyOfRange(archivosProceso, contador, contador + ArchivosPorHilo);
 
                 this.poolWorkers[numeroWorker] =
