@@ -1,23 +1,27 @@
 package proyectodarknet;
+
 import Errores.ErrorArchivo;
 import Errores.ErrorEscritura;
 import archivos.Archivo;
 import procesamiento.enumeradores.Columna;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.io.File;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import procesamiento.enumeradores.Operador;
 import procesamiento.enumeradores.Tipo;
-import procesamiento.extractor.Extractor;
 import procesamiento.filtro.Filtro;
 import procesamiento.manager.Manager;
-import static constantes.ConstantesDeEjecucion.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import static constantes.ConstantesDeEjecucion.getRutaArchivoEntrada;
+import static constantes.ConstantesDeEjecucion.setRutaArchivoEntrada;
 
  
 public class Formulario extends JFrame implements ActionListener {
@@ -33,7 +37,6 @@ public class Formulario extends JFrame implements ActionListener {
     private JComboBox colInteres;
     private JComboBox cri;
     private JComboBox op;
-    private JLabel add;
     private JLabel criT;
     private JTextField criText;
     private JTextField tadd;
@@ -53,14 +56,12 @@ public class Formulario extends JFrame implements ActionListener {
     
     ArrayList<String> columnasName = new ArrayList<>();
     ArrayList<Columna> columnas = new ArrayList<>();
-    ArrayList<String> columnasId = new ArrayList<>();
     ArrayList<String> columnasSel = new ArrayList<>();
    
 
 
     public Formulario(){
         for (Columna columna: Columna.values()) {
-                System.out.println(columna);
                 columnasName.add(columna.getNombre());
                 columnas.add(columna);
         }
@@ -138,8 +139,6 @@ public class Formulario extends JFrame implements ActionListener {
         cri.setLocation(100, 370);
         cri.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent arg0) {
-                //Do Something
-                System.out.println(cri.getSelectedItem());
                 if(cri.getSelectedItem()=="flow_id" || cri.getSelectedItem()=="src_ip" || cri.getSelectedItem()=="dst_ip" || cri.getSelectedItem() == "timestamp" || cri.getSelectedItem() == "label1" || cri.getSelectedItem()== "label2"){
                     op.setSelectedIndex(0);
                 }
@@ -153,11 +152,11 @@ public class Formulario extends JFrame implements ActionListener {
         op.setLocation(280, 370);
         op.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent arg0) {
-                //Do Something
-                System.out.println(cri.getSelectedItem());
-                if(cri.getSelectedItem()=="flow_id" || cri.getSelectedItem()=="src_ip" || cri.getSelectedItem()=="dst_ip" || cri.getSelectedItem() == "timestamp" || cri.getSelectedItem() == "label1" || cri.getSelectedItem()== "label2"){
-                    op.setSelectedIndex(0);
-                }
+                try {
+                    if(cri.getSelectedItem()=="flow_id" || cri.getSelectedItem()=="src_ip" || cri.getSelectedItem()=="dst_ip" || cri.getSelectedItem() == "timestamp" || cri.getSelectedItem() == "label1" || cri.getSelectedItem()== "label2"){
+                        op.setSelectedIndex(0);
+                    }
+                } catch (StackOverflowError ignored) {}
             }
         });
         c.add(op);
@@ -293,19 +292,13 @@ public class Formulario extends JFrame implements ActionListener {
                 try {
                     Archivo.procesarArchivo(getRutaArchivoEntrada());
                 } catch (ErrorArchivo ex) {
-                    Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex);
                 }
             
                 try {
                     new Manager( filtros1 , columnasRequeridas1 );
-                } catch (ErrorEscritura ex) {
-                System.out.println(ex);
-                } catch (InterruptedException ex) {
+                } catch (ErrorEscritura | InterruptedException | ErrorArchivo ex) {
                     System.out.println(ex);
-                    // Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ErrorArchivo ex) {
-                    System.out.println(ex);
-                    // Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else{
                 tout.setText("<h2>Datos finales </h2>"
@@ -339,7 +332,7 @@ public class Formulario extends JFrame implements ActionListener {
             op.setSelectedIndex(0);
             resadd.setText(def);
             columnasSel= new ArrayList<>();
-            columnasRequeridas1 =  new HashSet<Columna>();
+            columnasRequeridas1 = new HashSet<>();
         }
     }
 }
