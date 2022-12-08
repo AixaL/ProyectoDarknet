@@ -9,6 +9,8 @@ import procesamiento.enumeradores.Tipo;
 import procesamiento.filtro.Filtro;
 import procesamiento.manager.Manager;
 
+import static constantes.ConstantesDeEjecucion.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -67,7 +69,7 @@ public class Formulario extends JFrame implements ActionListener {
         }
         
         setTitle("Proyecto Final");
-        setBounds(300, 90, 900, 600);
+        setBounds(300, 90, 1300, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
  
@@ -190,7 +192,7 @@ public class Formulario extends JFrame implements ActionListener {
         tout = new JTextPane();
         tout.setContentType("text/html");
         tout.setFont(new Font("Arial", Font.PLAIN, 15));
-        tout.setSize(300, 400);
+        tout.setSize(700, 400);
         tout.setLocation(500, 100);
         tout.setEditable(false);
         c.add(tout);
@@ -252,8 +254,8 @@ public class Formulario extends JFrame implements ActionListener {
                     + "<ul>"+list+ "</ul>"
                     + "<h4>Criterio de busqueda</h4>"
                     + "<p>"+criterioB+"</p>"
-                    + "<h4>Ruta del archivo: </h4>"
-                    + "<span>"+ruuta+"</span>");
+                    + "<h4>Ruta del archivo de resultados: </h4>"
+                    + "<span>"+getRutaArchivoSalida()+"</span>");
            
                 for (int j=0;j<columnas.size();j++) {
                     if(columnas.get(j).getNombre() == cri.getSelectedItem() ){
